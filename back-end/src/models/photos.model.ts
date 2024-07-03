@@ -2,6 +2,7 @@ import { FetchedPhoto, PhotoQueryStringOptions } from '../types/photos';
 import {
   filterResponseByAlbumId,
   filterResponseBySearchText,
+  getAlbumFilter,
   orderResponse,
   paginateResponse,
 } from '../utils/utils';
@@ -26,6 +27,9 @@ export async function populatePhotoData() {
 export function getAllPhotoData(queryStringOptions: PhotoQueryStringOptions) {
   const response = storage.getItem(PHOTO_STORAGE_KEY);
   let data: FetchedPhoto[] = JSON.parse(response);
+
+  console.log(queryStringOptions);
+
   // filter data
   if (queryStringOptions.searchText && queryStringOptions.searchText !== '') {
     data = filterResponseBySearchText(data, queryStringOptions.searchText);
@@ -38,39 +42,44 @@ export function getAllPhotoData(queryStringOptions: PhotoQueryStringOptions) {
   const totalResults = data.length;
   const totalPages =
     queryStringOptions.limit && queryStringOptions.limit >= 0
-      ? totalResults / queryStringOptions.limit
+      ? Math.round(totalResults / queryStringOptions.limit)
       : 1;
   const currentPages =
     queryStringOptions.page && queryStringOptions.page > 0
       ? queryStringOptions.page
       : 1;
+  const skip = queryStringOptions.skip ? queryStringOptions.skip : 0;
 
-  // paginate data
-  if (queryStringOptions.skip) {
-    if (queryStringOptions.skip < totalResults) {
-      data = paginateResponse(
-        data,
-        queryStringOptions.skip,
-        queryStringOptions.limit
-      );
-    } else if (queryStringOptions.skip >= totalResults) {
-      return {
-        totalResults: 0,
-        totalPages: 0,
-        currentPages: 0,
-        data: [],
-      };
-    }
-  }
   // order data
   if (queryStringOptions.ord && queryStringOptions.ord !== '') {
     data = orderResponse(data, queryStringOptions.ord);
   }
+
+  const albumDataList = getAlbumFilter(data);
+
+  // paginate data
+  if (skip < totalResults) {
+    data = paginateResponse(
+      data,
+      queryStringOptions.skip,
+      queryStringOptions.limit
+    );
+  } else if (skip >= totalResults) {
+    return {
+      totalResults: 0,
+      totalPages: 0,
+      currentPages: 0,
+      data: [],
+      albumDataList: [],
+    };
+  }
+
   return {
     totalResults,
     totalPages,
     currentPages: currentPages > totalPages ? totalPages : currentPages,
     data,
+    albumDataList,
   };
 }
 

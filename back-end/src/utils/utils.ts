@@ -53,11 +53,25 @@ export function orderResponse<T extends { id: number }>(
   return originalData;
 }
 
+export function getAlbumFilter<T extends { albumId: number }>(
+  originalData: T[]
+): number[] {
+  const albumIsData: number[] = [];
+  originalData.forEach((e) => {
+    if (!albumIsData.includes(e.albumId)) {
+      albumIsData.push(e.albumId);
+    }
+  });
+  return albumIsData;
+}
+
 export function paginateResponse<T>(
   originalData: T[],
   skip?: number,
   limit?: number
 ): T[] {
+  console.log(originalData.length, skip, limit);
+
   let paginatedData = originalData;
   const startPosition = skip && skip >= 0 ? skip : 0;
   if (startPosition < originalData.length) {
