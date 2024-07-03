@@ -6,9 +6,9 @@ import ImageWithFallback from '../ImageWithFallback';
 
 export default function PhotoCard({ photo, onDelete }: PhotoCardProp) {
   return (
-    <article className='w-1/4 m-4 rounded-2xl overflow-hidden bg-gray-500 shadow-2xl'>
+    <article className='w-1/4 m-4 rounded-2xl overflow-hidden bg-blue-500 bg-opacity-25 shadow-2xl'>
       <a href={photo.url}>
-        <div className='p-4'>
+        <div className='py-4 px-6'>
           <h4 className='font-bold text-xl mb-2 line-clamp-2'>
             {photo.id} {photo.title}
           </h4>
