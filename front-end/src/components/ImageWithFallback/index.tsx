@@ -14,16 +14,16 @@ export default function ImageWithFallback({
   alt,
   ...rest
 }: ImageWithFallbackProps) {
-  const [imgSrc, set_imgSrc] = useState(src);
+  const [imgSrc, setImgSrc] = useState(src);
 
   useEffect(() => {
-    set_imgSrc(src);
+    setImgSrc(src);
   }, [src]);
 
   return (
     <Image
       alt={alt}
-      src={fallbackSrc}
+      src={imgSrc}
       width={150}
       height={150}
       loading='lazy'
@@ -31,7 +31,7 @@ export default function ImageWithFallback({
       {...rest}
       placeholder='blur'
       onError={() => {
-        set_imgSrc(fallbackSrc);
+        setImgSrc(fallbackSrc);
       }}
     />
   );

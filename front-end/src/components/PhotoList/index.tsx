@@ -86,11 +86,11 @@ export default function PhotoList({
           })}
       </section>
       {!fetchedAllData && (
-        <section ref={loadingRef}>
+        <section ref={loadingRef} className='w-full flex justify-center mt-8'>
           <Image
-            className='animate-spin h-5 w-5 mr-3 color'
-            width={16}
-            height={16}
+            className='animate-spin h-12 w-12 text-cyan-300'
+            width={32}
+            height={32}
             src={loadingIcon}
             alt='loading icon'
           />
