@@ -3,6 +3,6 @@ import { httpGetTopTenUsers } from './users.controller';
 
 const usersRouter = express.Router();
 
-usersRouter.use('/', httpGetTopTenUsers);
+usersRouter.get('/', httpGetTopTenUsers);
 
 export default usersRouter;

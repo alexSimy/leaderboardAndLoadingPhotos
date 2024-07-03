@@ -18,8 +18,8 @@ export async function getTopTenUsers(): Promise<LeaderboardUser[] | undefined> {
         score: randomScore(),
       };
     });
-    data = data.sort((u1, u2) => {
-      return u2.score - u1.score;
+    data = data.sort((e1, e2) => {
+      return e2.score - e1.score;
     });
     return data;
   } catch (err) {
